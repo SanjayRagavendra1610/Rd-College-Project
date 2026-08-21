@@ -1,0 +1,6 @@
+{
+  "name": "RDCCPS - Courses Offered & Academic Redesign",
+  "description": "Modern, interactive redesign of RD College of Commerce and Professional Studies courses offered page with integrated CA, ACCA, and CMA programs, curriculum roadmaps, comparison tool, and admission explorer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
