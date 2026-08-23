@@ -9,6 +9,10 @@
     font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
   }
 
+  .font-brand-serif {
+    font-family: 'EB Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  }
+
   .font-crest {
     font-family: 'Cinzel', serif;
   }

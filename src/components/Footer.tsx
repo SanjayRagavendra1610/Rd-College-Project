@@ -35,10 +35,12 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
           {/* Col 1 & 2: Brand & Address */}
           <div className="lg:col-span-2 space-y-4">
-            <Logo variant="light" size="lg" />
+            <div className="inline-block bg-white p-3.5 rounded-2xl shadow-md border border-slate-200/20">
+              <Logo variant="dark" size="md" layout="stacked" />
+            </div>
 
             <p className="text-slate-300 leading-relaxed max-w-sm pt-1">
-              RD College of Commerce & Professional Studies (RDCCPS) is dedicated to producing elite Chartered Accountants, ACCA Global Affiliates, and Cost Management leaders through integrated university degree programs.
+              RD College of Commerce and Professional Studies (RDCCPS) is dedicated to producing elite Chartered Accountants, ACCA Global Affiliates, and Cost Management leaders through integrated university degree programs.
             </p>
 
             <div className="space-y-2.5 pt-2 text-slate-300">
