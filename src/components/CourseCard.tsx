@@ -128,8 +128,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({
                 <span className="text-xs font-bold text-slate-800">B.Com (Regular)</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100">
-                <span className="text-[11px] text-slate-400 font-semibold block">Avg. Placement</span>
-                <span className="text-xs font-bold text-slate-800">{course.careerOpportunities[0]?.averagePackage || '₹6.5 - 12 LPA'}</span>
+                <span className="text-[11px] text-slate-400 font-semibold block">Affiliation</span>
+                <span className="text-xs font-bold text-slate-800">Bharathiar University</span>
               </div>
               <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100">
                 <span className="text-[11px] text-slate-400 font-semibold block">Eligibility</span>
@@ -267,14 +267,14 @@ export const CourseCard: React.FC<CourseCardProps> = ({
             ))}
           </div>
 
-          {/* Career & Salary highlight */}
+          {/* Career Profile highlight */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
             <div className="flex items-center gap-1.5 text-slate-600">
               <Briefcase className="w-3.5 h-3.5 text-blue-600" />
-              <span className="font-semibold">{course.careerOpportunities[0]?.role.split('/')[0]}</span>
+              <span className="font-semibold text-slate-800">{course.careerOpportunities[0]?.role.split('/')[0]}</span>
             </div>
-            <span className="font-extrabold text-slate-900 bg-amber-50 text-amber-900 px-2.5 py-0.5 rounded-md border border-amber-200/80 shadow-2xs">
-              {course.careerOpportunities[0]?.averagePackage}
+            <span className="font-medium text-[11px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+              {course.affiliation.split(',')[0]}
             </span>
           </div>
         </div>

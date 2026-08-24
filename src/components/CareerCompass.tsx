@@ -298,8 +298,8 @@ export const CareerCompass: React.FC<CareerCompassProps> = ({
 
                   <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs pt-2">
                     <div className="bg-white/10 p-2.5 rounded-xl backdrop-blur-xs">
-                      <span className="text-[10px] text-slate-300 block">Avg. Placement</span>
-                      <strong className="text-amber-300 font-extrabold">{matchedCourse.careerOpportunities[0]?.averagePackage}</strong>
+                      <span className="text-[10px] text-slate-300 block">Affiliation</span>
+                      <strong className="text-amber-300 font-extrabold">Bharathiar Univ</strong>
                     </div>
                     <div className="bg-white/10 p-2.5 rounded-xl backdrop-blur-xs">
                       <span className="text-[10px] text-slate-300 block">Top Role</span>

@@ -47,7 +47,7 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({ isOpen, onClose })
           `    Duration           : ${c.duration} (${c.totalSemesters} Semesters)\n` +
           `    Eligibility        : ${c.eligibility} (Min: ${c.minimumMarks})\n` +
           `    Key Focus          : ${c.tagline}\n` +
-          `    Avg. Placement     : ${c.careerOpportunities[0]?.averagePackage}\n` +
+          `    Affiliation        : Bharathiar University\n` +
           `    Key Software Labs  : ${c.toolsAndCertifications.join(', ')}\n`
         )).join('') +
         `\n========================================================================\n` +

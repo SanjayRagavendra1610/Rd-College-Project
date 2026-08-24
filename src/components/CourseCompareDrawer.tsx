@@ -159,11 +159,11 @@ export const CourseCompareDrawer: React.FC<CourseCompareDrawerProps> = ({
                   </tr>
 
                   <tr>
-                    <td className="p-3 font-semibold text-slate-700 bg-slate-50">Avg. Placement</td>
+                    <td className="p-3 font-semibold text-slate-700 bg-slate-50">Key Career Roles</td>
                     {comparedCourses.map((c) => (
                       <td key={c.id} className="p-3">
-                        <span className="font-extrabold text-emerald-800 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 inline-block">
-                          {c.careerOpportunities[0]?.averagePackage}
+                        <span className="font-bold text-slate-800 bg-slate-100 px-2 py-1 rounded border border-slate-200 inline-block text-[11px]">
+                          {c.careerOpportunities[0]?.role}
                         </span>
                       </td>
                     ))}

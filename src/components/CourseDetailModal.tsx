@@ -55,7 +55,7 @@ export const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
         `SEMESTER WISE BREAKDOWN:\n` +
         course.semesters.map(s => `\n${s.title} [Milestone: ${s.professionalMilestone || 'N/A'}]\n` + s.subjects.map(sub => `  - [${sub.code}] ${sub.name} (${sub.type}, ${sub.credits} Credits)`).join('\n')).join('\n\n') +
         `\n\nCAREER PROSPECTS:\n` +
-        course.careerOpportunities.map(c => `- ${c.role} (${c.averagePackage}): Top Recruiters: ${c.topCompanies.join(', ')}`).join('\n') +
+        course.careerOpportunities.map(c => `- ${c.role}: Top Recruiters: ${c.topCompanies.join(', ')}`).join('\n') +
         `\n\nADMISSIONS HELPDESK:\nPhone: +91 97885 56999 | Email: helpdesk@rdccps.com | Website: rdccps.org`
       ], { type: 'text/plain;charset=utf-8' });
       
@@ -200,7 +200,7 @@ export const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
                 : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
-            Eligibility & Fees
+            Eligibility &amp; Admissions
           </button>
         </div>
 
@@ -437,13 +437,10 @@ export const CourseDetailModal: React.FC<CourseDetailModalProps> = ({
                       <p className="text-xs text-slate-600 mt-1 leading-relaxed">{career.description}</p>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-200 space-y-2">
-                      <div className="text-xs font-extrabold text-emerald-800 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 text-center">
-                        Avg. Salary: {career.averagePackage}
-                      </div>
+                    <div className="pt-3 border-t border-slate-200 space-y-1.5">
                       <div className="text-[11px] text-slate-500">
-                        <span className="font-semibold block text-slate-700">Top Hiring Firms:</span>
-                        {career.topCompanies.join(', ')}
+                        <span className="font-semibold block text-slate-700">Top Hiring Firms &amp; Big 4:</span>
+                        <span className="text-slate-800 font-medium">{career.topCompanies.join(', ')}</span>
                       </div>
                     </div>
                   </div>
