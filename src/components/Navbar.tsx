@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { RDCCPS_INFO } from '../data/coursesData';
+import { ActiveTabType } from '../types';
 import { 
   Phone, 
   Mail, 
@@ -17,6 +18,8 @@ import {
 } from 'lucide-react';
 
 interface NavbarProps {
+  activeTab: ActiveTabType;
+  onSelectTab: (tab: ActiveTabType) => void;
   compareCount: number;
   onOpenCompare: () => void;
   onOpenApply: (courseId?: string) => void;
@@ -27,6 +30,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
+  activeTab,
+  onSelectTab,
   compareCount,
   onOpenCompare,
   onOpenApply,
@@ -47,13 +52,21 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const handleNavClick = (tab: ActiveTabType, sectionId?: string) => {
+    onSelectTab(tab);
     setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (sectionId) {
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 50);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
+
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-200">
@@ -119,56 +132,69 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Desktop Nav Links */}
-          <div className="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-700">
+          <div className="hidden lg:flex items-center gap-4 text-xs font-semibold text-slate-700">
+            <button 
+              id="nav-link-home"
+              onClick={() => handleNavClick('home')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'home' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
+            >
+              Home
+            </button>
+            <button 
+              id="nav-link-about"
+              onClick={() => handleNavClick('about', 'about-us-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'about' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
+            >
+              About RDCCPS
+            </button>
             <button 
               id="nav-link-courses"
-              onClick={() => scrollToSection('courses-grid-section')} 
-              className="hover:text-amber-600 transition-colors py-1 cursor-pointer font-semibold text-slate-900"
+              onClick={() => handleNavClick('courses', 'courses-grid-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'courses' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
             >
-              Courses Offered
+              Courses
             </button>
             <button 
-              id="nav-link-dual"
-              onClick={() => scrollToSection('dual-path-section')} 
-              className="hover:text-amber-600 transition-colors py-1 cursor-pointer"
+              id="nav-link-faculty"
+              onClick={() => handleNavClick('faculty', 'faculty-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'faculty' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
             >
-              Dual Advantage
+              Faculty
             </button>
             <button 
-              id="nav-link-roadmap"
-              onClick={() => scrollToSection('curriculum-roadmap-section')} 
-              className="hover:text-amber-600 transition-colors py-1 cursor-pointer"
+              id="nav-link-admissions"
+              onClick={() => handleNavClick('admissions', 'admissions-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'admissions' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
             >
-              Curriculum Roadmap
+              Admissions
             </button>
             <button 
               id="nav-link-facilities"
-              onClick={() => scrollToSection('campus-facilities-section')} 
-              className="hover:text-amber-600 transition-colors py-1 cursor-pointer"
+              onClick={() => handleNavClick('facilities', 'campus-life-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'facilities' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
             >
-              Facilities
+              Campus Life
             </button>
             <button 
-              id="nav-link-compass"
-              onClick={() => scrollToSection('career-compass-section')} 
-              className="hover:text-amber-600 transition-colors py-1 cursor-pointer flex items-center gap-1"
+              id="nav-link-placements"
+              onClick={() => handleNavClick('placements', 'placements-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'placements' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Course Finder
+              Placements
             </button>
             <button 
-              id="nav-link-faqs"
-              onClick={() => scrollToSection('faq-section')} 
-              className="hover:text-amber-600 transition-colors py-1 cursor-pointer"
+              id="nav-link-contact"
+              onClick={() => handleNavClick('contact', 'contact-section')} 
+              className={`transition-colors py-1 cursor-pointer ${activeTab === 'contact' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
             >
-              FAQs
+              Contact
             </button>
             <button
               id="nav-link-ai-advisor"
               onClick={onOpenAIChatbot}
-              className="px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/20 hover:from-amber-400/30 hover:to-amber-500/30 text-amber-900 border border-amber-400/50 transition-all cursor-pointer flex items-center gap-1.5 font-bold shadow-xs text-xs"
+              className="px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/20 hover:from-amber-400/30 hover:to-amber-500/30 text-amber-900 border border-amber-400/50 transition-all cursor-pointer flex items-center gap-1 font-bold shadow-xs text-[11px]"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-spin" style={{ animationDuration: '6s' }} />
+              <Sparkles className="w-3 h-3 text-amber-600" />
               <span>AI Advisor</span>
             </button>
           </div>
@@ -269,50 +295,62 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Logo size="sm" variant="dark" />
             </div>
 
-            <div className="space-y-2 text-sm font-medium text-slate-800">
+            <div className="space-y-1.5 text-sm font-medium text-slate-800">
               <button 
-                onClick={() => scrollToSection('courses-grid-section')} 
-                className="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100 flex items-center justify-between"
+                onClick={() => handleNavClick('home')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'home' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
+              >
+                <span>Home</span>
+              </button>
+              <button 
+                onClick={() => handleNavClick('about', 'about-us-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'about' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
+              >
+                <span>About RDCCPS &amp; Vision</span>
+              </button>
+              <button 
+                onClick={() => handleNavClick('courses', 'courses-grid-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'courses' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
                 <span>Courses Offered</span>
-                <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold">5 Programs</span>
+                <span className="text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-semibold">5 Programs</span>
               </button>
               <button 
-                onClick={() => scrollToSection('dual-path-section')} 
-                className="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100"
+                onClick={() => handleNavClick('faculty', 'faculty-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'faculty' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
-                The Dual-Path Advantage
+                <span>Faculty of Eminence</span>
               </button>
               <button 
-                onClick={() => scrollToSection('curriculum-roadmap-section')} 
-                className="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100"
+                onClick={() => handleNavClick('admissions', 'admissions-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'admissions' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
-                Curriculum & Exam Roadmap
+                <span>Admissions 2026-27</span>
               </button>
               <button 
-                onClick={() => scrollToSection('career-compass-section')} 
-                className="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100 text-emerald-700 font-semibold"
+                onClick={() => handleNavClick('facilities', 'campus-life-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'facilities' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
-                Course Recommendation Wizard
+                <span>Campus Infrastructure &amp; Life</span>
               </button>
               <button 
-                onClick={() => scrollToSection('campus-facilities-section')} 
-                className="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100"
+                onClick={() => handleNavClick('placements', 'placements-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'placements' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
-                Campus & Facilities
+                <span>Placements &amp; Articleships</span>
               </button>
               <button 
-                onClick={() => scrollToSection('faq-section')} 
-                className="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-100"
+                onClick={() => handleNavClick('contact', 'contact-section')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'contact' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
-                Frequently Asked Questions
+                <span>Contact &amp; Campus Visit</span>
               </button>
               <button 
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenAIChatbot();
                 }} 
-                className="w-full text-left py-2 px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold flex items-center justify-between border border-amber-200"
+                className="w-full text-left py-2 px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold flex items-center justify-between border border-amber-200 mt-2"
               >
                 <span className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-600" />

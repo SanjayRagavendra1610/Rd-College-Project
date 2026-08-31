@@ -1,6 +1,8 @@
 import React from 'react';
 import { Logo } from './Logo';
 import { RDCCPS_INFO, COURSES_DATA } from '../data/coursesData';
+import { RDCCPS_CORE_PROFILE } from '../data/rdccpsFullData';
+import { ActiveTabType } from '../types';
 import { 
   MapPin, 
   Phone, 
@@ -11,22 +13,40 @@ import {
   Heart, 
   ShieldCheck,
   Award,
-  Download
+  Download,
+  Building2,
+  Calendar
 } from 'lucide-react';
 
 interface FooterProps {
+  onSelectTab?: (tab: ActiveTabType) => void;
   onSelectCourseById: (courseId: string) => void;
   onOpenApply: () => void;
   onOpenBrochure: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
+  onSelectTab,
   onSelectCourseById,
   onOpenApply,
   onOpenBrochure
 }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleTabClick = (tab: ActiveTabType, sectionId?: string) => {
+    if (onSelectTab) {
+      onSelectTab(tab);
+      if (sectionId) {
+        setTimeout(() => {
+          const el = document.getElementById(sectionId);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   };
 
   return (
@@ -40,13 +60,13 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             <p className="text-slate-300 leading-relaxed max-w-sm pt-1">
-              RD College of Commerce and Professional Studies (RDCCPS) is dedicated to producing elite Chartered Accountants, ACCA Global Affiliates, and Cost Management leaders through integrated university degree programs.
+              RD College of Commerce and Professional Studies (RDCCPS) is an institution in Erode &amp; Coimbatore, Tamil Nadu, affiliated with Bharathiar University. We empower commerce scholars with integrated CA, ACCA, and CMA qualifications under one roof.
             </p>
 
             <div className="space-y-2.5 pt-2 text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-                <span>{RDCCPS_INFO.address}</span>
+                <span>6/232 Pulavarpalayam, Uthukuli Road, Vijayamangalam, Perundurai, Erode - 638056</span>
               </div>
 
               <div className="flex items-center gap-2.5">
@@ -88,47 +108,59 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* Col 4: Quick Links */}
+          {/* Col 4: Quick Navigation Tabs */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              Admissions & Student Life
+              Site Navigation
             </h4>
             <ul className="space-y-2">
               <li>
                 <button
-                  onClick={onOpenApply}
+                  onClick={() => handleTabClick('about', 'about-us-section')}
                   className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer"
                 >
-                  Admission Enquiry 2026-27
+                  About RDCCPS &amp; Vision
                 </button>
               </li>
               <li>
                 <button
-                  onClick={onOpenBrochure}
+                  onClick={() => handleTabClick('faculty', 'faculty-section')}
                   className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer"
                 >
-                  Download Prospectus PDF
+                  Faculty of Eminence
                 </button>
               </li>
               <li>
-                <a href="#dual-path-section" className="hover:text-amber-400 transition-colors text-slate-300">
-                  The Dual-Path Advantage
-                </a>
+                <button
+                  onClick={() => handleTabClick('admissions', 'admissions-section')}
+                  className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer"
+                >
+                  Admissions 2026-27
+                </button>
               </li>
               <li>
-                <a href="#curriculum-roadmap-section" className="hover:text-amber-400 transition-colors text-slate-300">
-                  3-Year Milestone Roadmap
-                </a>
+                <button
+                  onClick={() => handleTabClick('facilities', 'campus-life-section')}
+                  className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer"
+                >
+                  Campus Life &amp; Hostels
+                </button>
               </li>
               <li>
-                <a href="#campus-facilities-section" className="hover:text-amber-400 transition-colors text-slate-300">
-                  Campus & Hostel Facilities
-                </a>
+                <button
+                  onClick={() => handleTabClick('placements', 'placements-section')}
+                  className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer"
+                >
+                  Placements &amp; Articleships
+                </button>
               </li>
               <li>
-                <a href="#faq-section" className="hover:text-amber-400 transition-colors text-slate-300">
-                  Frequently Asked Questions
-                </a>
+                <button
+                  onClick={() => handleTabClick('contact', 'contact-section')}
+                  className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer"
+                >
+                  Contact &amp; Campus Location
+                </button>
               </li>
             </ul>
           </div>
@@ -136,14 +168,28 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Col 5: Accreditations & Timings */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              Affiliation & Hours
+              Affiliation &amp; Admissions
             </h4>
             <p className="text-slate-300 leading-relaxed">
               Affiliated with <strong>Bharathiar University</strong>, Coimbatore. Approved by Higher Education Department, Govt. of Tamil Nadu.
             </p>
-            <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-              <span className="text-[11px] text-amber-400 font-bold block">Campus Timings:</span>
-              <p className="text-[11px] text-slate-300">{RDCCPS_INFO.operatingHours}</p>
+            <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+              <span className="text-[11px] text-amber-400 font-bold block">Admissions Helpdesk:</span>
+              <p className="text-[11px] text-slate-300">+91 97885 56999 / 98438 85222</p>
+              <div className="pt-1 flex gap-2">
+                <button
+                  onClick={onOpenApply}
+                  className="px-2.5 py-1 rounded-md bg-amber-500 text-slate-950 font-bold text-[10.5px] hover:bg-amber-400 transition-colors cursor-pointer"
+                >
+                  Apply Online
+                </button>
+                <button
+                  onClick={onOpenBrochure}
+                  className="px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 font-semibold text-[10.5px] hover:bg-slate-700 transition-colors cursor-pointer"
+                >
+                  Prospectus
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -151,7 +197,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-[11px]">
           <div>
-            © {new Date().getFullYear()} RD College of Commerce & Professional Studies (RDCCPS). All rights reserved.
+            © {new Date().getFullYear()} RD College of Commerce &amp; Professional Studies (RDCCPS). All rights reserved.
           </div>
 
           <div className="flex items-center gap-4">
@@ -170,3 +216,4 @@ export const Footer: React.FC<FooterProps> = ({
     </footer>
   );
 };
+

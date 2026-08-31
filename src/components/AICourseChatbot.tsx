@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { COURSES_DATA } from '../data/coursesData';
 import { Course } from '../types';
-import { Logo } from './Logo';
+import { Logo, RdccpsShieldCrest } from './Logo';
 
 export interface ChatMessage {
   id: string;
@@ -300,8 +300,8 @@ How can I help you choose the right course today? Feel free to ask about fees, s
             {/* Chatbot Header */}
             <div className="p-4 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white flex items-center justify-between border-b border-slate-800 relative flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-slate-950 flex items-center justify-center shadow-md font-bold">
-                  <Bot className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-xl bg-white/95 p-0.5 text-slate-950 flex items-center justify-center shadow-md border border-amber-400/40">
+                  <RdccpsShieldCrest size={34} />
                 </div>
 
                 <div>

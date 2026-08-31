@@ -1,4 +1,5 @@
 export type CertificationType = 'CA' | 'ACCA' | 'CMA' | 'ALL';
+export type ActiveTabType = 'home' | 'about' | 'courses' | 'faculty' | 'admissions' | 'facilities' | 'placements' | 'contact';
 
 export interface SemesterSubject {
   code: string;
@@ -16,7 +17,7 @@ export interface SemesterInfo {
 
 export interface CareerOpportunity {
   role: string;
-  averagePackage: string;
+  averagePackage?: string;
   topCompanies: string[];
   description: string;
 }
@@ -56,6 +57,35 @@ export interface Course {
   brochureUrl?: string;
 }
 
+export interface FacultyMember {
+  id: string;
+  name: string;
+  designation: string;
+  roleType: 'Leadership' | 'Professional CA/CMA' | 'Academic Commerce' | 'Administration';
+  qualifications: string;
+  experienceYears: string;
+  specialization: string;
+  bio: string;
+  subjectsTaught: string[];
+  badgeColor?: string;
+}
+
+export interface CampusFacilityItem {
+  id: string;
+  title: string;
+  category: 'Academic' | 'Technology' | 'Student Life' | 'Logistics';
+  description: string;
+  features: string[];
+  iconName: string;
+  tag: string;
+}
+
+export interface RecruiterPartner {
+  name: string;
+  category: 'Big 4' | 'Chartered Firm' | 'Tech & MNC' | 'Banking & BFSI';
+  roles: string[];
+}
+
 export interface ComparisonItem {
   id: string;
   course: Course;
@@ -74,3 +104,4 @@ export interface AdmissionEnquiry {
   transportRequired: boolean;
   queryOrMessage?: string;
 }
+

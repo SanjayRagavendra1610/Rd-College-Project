@@ -1,6 +1,6 @@
 {
-  "name": "RDCCPS - Courses Offered & Academic Redesign",
-  "description": "Modern, interactive redesign of RD College of Commerce and Professional Studies courses offered page with integrated CA, ACCA, and CMA programs, curriculum roadmaps, comparison tool, and admission explorer.",
+  "name": "RDCCPS - RD College of Commerce & Professional Studies",
+  "description": "Official modernized website for RD College of Commerce & Professional Studies (RDCCPS), affiliated with Bharathiar University. Comprehensive portal covering Vision & Mission, Integrated CA/ACCA/CMA Courses, Faculty of Eminence, Admissions 2026-27, Campus Infrastructure, Big 4 Placements, and 24/7 AI Advisor.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

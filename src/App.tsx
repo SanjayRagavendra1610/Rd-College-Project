@@ -1,9 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { COURSES_DATA, RDCCPS_INFO } from './data/coursesData';
-import { Course, CertificationType } from './types';
+import { RDCCPS_CORE_PROFILE, FACULTY_DIRECTORY } from './data/rdccpsFullData';
+import { Course, CertificationType, ActiveTabType } from './types';
 import { Navbar } from './components/Navbar';
 import { AdmissionsTicker } from './components/AdmissionsTicker';
 import { HeroSection } from './components/HeroSection';
+import { AboutUsSection } from './components/AboutUsSection';
+import { FacultySection } from './components/FacultySection';
+import { AdmissionsSection } from './components/AdmissionsSection';
+import { CampusLifeSection } from './components/CampusLifeSection';
+import { PlacementsSection } from './components/PlacementsSection';
+import { ContactSection } from './components/ContactSection';
 import { CourseFilters } from './components/CourseFilters';
 import { CourseCard } from './components/CourseCard';
 import { CourseDetailModal } from './components/CourseDetailModal';
@@ -11,7 +18,6 @@ import { CourseCompareDrawer } from './components/CourseCompareDrawer';
 import { DualPathTimeline } from './components/DualPathTimeline';
 import { CareerCompass } from './components/CareerCompass';
 import { CurriculumRoadmap } from './components/CurriculumRoadmap';
-import { AcademicFacilities } from './components/AcademicFacilities';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { FAQSection } from './components/FAQSection';
 import { AdmissionModal } from './components/AdmissionModal';
@@ -20,16 +26,21 @@ import { AICourseChatbot } from './components/AICourseChatbot';
 import { Footer } from './components/Footer';
 import { 
   Phone, 
-  MessageSquare, 
   Sparkles, 
   ArrowUp, 
   FileText,
   GraduationCap,
-  Scale
+  Scale,
+  Building2,
+  Users,
+  Award,
+  BookOpen,
+  Briefcase
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState<ActiveTabType>('home');
   const [selectedCategory, setSelectedCategory] = useState<CertificationType>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [viewMode, setViewMode] = useState<'grid' | 'detailed'>('grid');
@@ -70,7 +81,6 @@ export default function App() {
       setComparedCourses(prev => prev.filter(c => c.id !== course.id));
     } else {
       if (comparedCourses.length >= 3) {
-        // Replace first if limit reached
         setComparedCourses(prev => [...prev.slice(1), course]);
       } else {
         setComparedCourses(prev => [...prev, course]);
@@ -97,6 +107,8 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col selection:bg-amber-500 selection:text-white">
       {/* Navigation */}
       <Navbar
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
         compareCount={comparedCourses.length}
         onOpenCompare={() => setIsCompareDrawerOpen(true)}
         onOpenApply={() => handleOpenApply()}
@@ -115,70 +127,195 @@ export default function App() {
         onOpenBrochure={() => setIsBrochureModalOpen(true)} 
       />
 
-      {/* Hero Section */}
-      <HeroSection
-        onSelectCategory={setSelectedCategory}
-        onOpenApply={() => handleOpenApply()}
-        onOpenAIChatbot={() => {
-          setAiChatbotInitialQuery('');
-          setIsAIChatbotOpen(true);
-        }}
-        onOpenCompass={() => {
-          const el = document.getElementById('career-compass-section');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-        onOpenBrochure={() => setIsBrochureModalOpen(true)}
-      />
+      {/* RENDER ACTIVE TAB / PAGE VIEW */}
 
-      {/* Main Courses Grid Section */}
-      <main id="courses-grid-section" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold">
-            <GraduationCap className="w-3.5 h-3.5 text-amber-700" />
-            <span>Undergraduate Programs with Integrated Coaching</span>
-          </div>
+      {/* 1. HOME VIEW */}
+      {activeTab === 'home' && (
+        <main>
+          {/* Hero Section */}
+          <HeroSection
+            onSelectCategory={(cat) => {
+              setSelectedCategory(cat);
+              const el = document.getElementById('courses-grid-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            onOpenApply={() => handleOpenApply()}
+            onOpenAIChatbot={() => {
+              setAiChatbotInitialQuery('');
+              setIsAIChatbotOpen(true);
+            }}
+            onOpenCompass={() => {
+              const el = document.getElementById('career-compass-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            onOpenBrochure={() => setIsBrochureModalOpen(true)}
+          />
 
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Flagship Courses Offered at RDCCPS
-          </h2>
+          {/* About Us Summary Section */}
+          <AboutUsSection
+            onOpenApply={() => handleOpenApply()}
+            onOpenBrochure={() => setIsBrochureModalOpen(true)}
+            onExplorePrograms={() => {
+              const el = document.getElementById('courses-grid-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
 
-          <p className="text-xs sm:text-sm text-slate-600">
-            Choose from 5 specialized B.Com pathways affiliated with Bharathiar University, each with integrated professional coaching for Chartered Accountancy (CA), ACCA (UK), or Cost & Management Accountancy (CMA).
-          </p>
-        </div>
+          {/* Main Courses Grid Section */}
+          <section id="courses-grid-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+            <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold">
+                <GraduationCap className="w-3.5 h-3.5 text-amber-700" />
+                <span>Undergraduate Programs with Integrated Coaching</span>
+              </div>
 
-        {/* Filter Bar */}
-        <CourseFilters
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-          totalCoursesCount={COURSES_DATA.length}
-          filteredCount={filteredCourses.length}
-        />
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-serif">
+                Flagship Courses Offered at RDCCPS
+              </h2>
 
-        {/* Courses Cards Grid / List */}
-        {filteredCourses.length === 0 ? (
-          <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-sm space-y-4">
-            <GraduationCap className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="text-lg font-bold text-slate-800">No matching commerce courses found</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              We couldn't find any courses matching "{searchQuery}". Try searching for terms like "CA", "ACCA", "Taxation", "Banking", or "Tally".
+              <p className="text-xs sm:text-sm text-slate-600">
+                Choose from 5 specialized B.Com pathways affiliated with Bharathiar University, each with integrated professional coaching for Chartered Accountancy (CA), ACCA (UK), or Cost &amp; Management Accountancy (CMA).
+              </p>
+            </div>
+
+            {/* Filter Bar */}
+            <CourseFilters
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              totalCoursesCount={COURSES_DATA.length}
+              filteredCount={filteredCourses.length}
+            />
+
+            {/* Courses Cards Grid */}
+            {filteredCourses.length === 0 ? (
+              <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-sm space-y-4">
+                <GraduationCap className="w-12 h-12 text-slate-300 mx-auto" />
+                <h3 className="text-lg font-bold text-slate-800">No matching commerce courses found</h3>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  We couldn't find any courses matching "{searchQuery}". Try searching for terms like "CA", "ACCA", "Taxation", "Banking", or "Tally".
+                </p>
+                <button
+                  onClick={() => {
+                    setSelectedCategory('ALL');
+                    setSearchQuery('');
+                  }}
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 cursor-pointer transition-colors"
+                >
+                  Reset All Filters
+                </button>
+              </div>
+            ) : (
+              <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                {filteredCourses.map((course) => (
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    viewMode={viewMode}
+                    isCompared={comparedCourses.some(c => c.id === course.id)}
+                    onToggleCompare={handleToggleCompare}
+                    onSelectCourse={(c) => setSelectedCourseForDetail(c)}
+                    onApplyCourse={(id) => handleOpenApply(id)}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* The Dual Path Advantage */}
+          <DualPathTimeline
+            onExploreCourses={() => {
+              const el = document.getElementById('courses-grid-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
+
+          {/* Faculty Section */}
+          <FacultySection onOpenApply={() => handleOpenApply()} />
+
+          {/* Course Recommendation Wizard */}
+          <CareerCompass
+            onSelectCourse={(course) => setSelectedCourseForDetail(course)}
+            onApplyCourse={(id) => handleOpenApply(id)}
+          />
+
+          {/* 3-Year Milestone Curriculum Roadmap */}
+          <CurriculumRoadmap />
+
+          {/* Campus & Facilities Showcase */}
+          <CampusLifeSection onOpenApply={() => handleOpenApply()} />
+
+          {/* Corporate Placements & Big 4 Recruiters */}
+          <PlacementsSection 
+            onOpenApply={() => handleOpenApply()} 
+            onExploreCourses={() => {
+              const el = document.getElementById('courses-grid-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
+
+          {/* Admissions Section */}
+          <AdmissionsSection
+            onOpenApply={(id) => handleOpenApply(id)}
+            onOpenBrochure={() => setIsBrochureModalOpen(true)}
+          />
+
+          {/* Student Testimonials */}
+          <TestimonialsSection />
+
+          {/* Frequently Asked Questions */}
+          <FAQSection />
+
+          {/* Contact Section */}
+          <ContactSection />
+        </main>
+      )}
+
+      {/* 2. ABOUT US TAB */}
+      {activeTab === 'about' && (
+        <main className="flex-1">
+          <AboutUsSection
+            onOpenApply={() => handleOpenApply()}
+            onOpenBrochure={() => setIsBrochureModalOpen(true)}
+            onExplorePrograms={() => setActiveTab('courses')}
+          />
+          <FacultySection onOpenApply={() => handleOpenApply()} />
+          <CampusLifeSection onOpenApply={() => handleOpenApply()} />
+        </main>
+      )}
+
+      {/* 3. COURSES TAB */}
+      {activeTab === 'courses' && (
+        <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+          <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold">
+              <GraduationCap className="w-3.5 h-3.5 text-amber-700" />
+              <span>Full Academic Curriculum &amp; Integrated Pathways</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-serif">
+              Explore All 5 Integrated Commerce Programs
+            </h2>
+
+            <p className="text-xs sm:text-sm text-slate-600">
+              Complete semester-wise syllabi, ICAI/ACCA/ICMAI milestones, tool certifications, and career profiles.
             </p>
-            <button
-              onClick={() => {
-                setSelectedCategory('ALL');
-                setSearchQuery('');
-              }}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 cursor-pointer transition-colors"
-            >
-              Reset All Filters
-            </button>
           </div>
-        ) : (
+
+          <CourseFilters
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            totalCoursesCount={COURSES_DATA.length}
+            filteredCount={filteredCourses.length}
+          />
+
           <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
             {filteredCourses.map((course) => (
               <CourseCard
@@ -192,37 +329,59 @@ export default function App() {
               />
             ))}
           </div>
-        )}
-      </main>
 
-      {/* The Dual Path Advantage */}
-      <DualPathTimeline
-        onExploreCourses={() => {
-          const el = document.getElementById('courses-grid-section');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
+          <div className="mt-16">
+            <CurriculumRoadmap />
+          </div>
+        </main>
+      )}
 
-      {/* Course Recommendation Wizard */}
-      <CareerCompass
-        onSelectCourse={(course) => setSelectedCourseForDetail(course)}
-        onApplyCourse={(id) => handleOpenApply(id)}
-      />
+      {/* 4. FACULTY TAB */}
+      {activeTab === 'faculty' && (
+        <main className="flex-1">
+          <FacultySection onOpenApply={() => handleOpenApply()} />
+        </main>
+      )}
 
-      {/* 3-Year Milestone Curriculum Roadmap */}
-      <CurriculumRoadmap />
+      {/* 5. ADMISSIONS TAB */}
+      {activeTab === 'admissions' && (
+        <main className="flex-1">
+          <AdmissionsSection
+            onOpenApply={(id) => handleOpenApply(id)}
+            onOpenBrochure={() => setIsBrochureModalOpen(true)}
+          />
+          <ContactSection />
+        </main>
+      )}
 
-      {/* Campus & Facilities Showcase */}
-      <AcademicFacilities />
+      {/* 6. CAMPUS LIFE TAB */}
+      {activeTab === 'facilities' && (
+        <main className="flex-1">
+          <CampusLifeSection onOpenApply={() => handleOpenApply()} />
+        </main>
+      )}
 
-      {/* Student Testimonials & Big 4 Recruiters */}
-      <TestimonialsSection />
+      {/* 7. PLACEMENTS TAB */}
+      {activeTab === 'placements' && (
+        <main className="flex-1">
+          <PlacementsSection 
+            onOpenApply={() => handleOpenApply()} 
+            onExploreCourses={() => setActiveTab('courses')}
+          />
+          <TestimonialsSection />
+        </main>
+      )}
 
-      {/* Frequently Asked Questions */}
-      <FAQSection />
+      {/* 8. CONTACT TAB */}
+      {activeTab === 'contact' && (
+        <main className="flex-1">
+          <ContactSection />
+        </main>
+      )}
 
       {/* Footer */}
       <Footer
+        onSelectTab={setActiveTab}
         onSelectCourseById={handleSelectCourseById}
         onOpenApply={() => handleOpenApply()}
         onOpenBrochure={() => setIsBrochureModalOpen(true)}
