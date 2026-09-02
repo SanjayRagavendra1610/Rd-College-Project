@@ -17,7 +17,9 @@ import {
   GraduationCap,
   MessageSquare,
   ShieldAlert,
-  ChevronDown
+  ChevronDown,
+  Copy,
+  Check
 } from 'lucide-react';
 import { COURSES_DATA } from '../data/coursesData';
 import { Course } from '../types';
@@ -52,13 +54,13 @@ export const AICourseChatbot: React.FC<AICourseChatbotProps> = ({
     {
       id: 'welcome-1',
       role: 'assistant',
-      content: `### 👋 Vanakkam & Welcome to **RDCCPS AI Course Advisor**!
+      content: `### 👋 Vanakkam & Welcome to the **RDCCPS AI Academic Advisor**!
 
-I am your dedicated academic counselor for **RD College of Commerce and Professional Studies (Erode)**, affiliated with **Bharathiar University**.
+I am your official counselor for **RD College of Commerce and Professional Studies (RDCCPS)** in Vijayamangalam, Erode, affiliated with **Bharathiar University (Coimbatore)**.
 
-I'm here to help you discover the exact undergraduate commerce degree & professional certification track (CA, ACCA, CMA, Computer Applications) aligned with your career goals, 12th standard marks, and aspirations.
+I can provide verified facts on our **5 flagship B.Com degree programs**, integrated **CA / ACCA / CMA coaching**, merit scholarships (up to 40%), daily timetables, hostel, and bus transport for **Admissions 2026 - 2027**.
 
-**How can I guide you today?** Choose a topic below or type your question:`,
+**How can I assist your career path today?** Tap any question below or type your query:`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -66,29 +68,34 @@ I'm here to help you discover the exact undergraduate commerce degree & professi
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const suggestedPrompts = [
     {
-      label: '🌍 ACCA vs CA for Working Abroad (Dubai/UK)',
-      query: 'What is the difference between B.Com with CA and B.Com with ACCA for working in UK, Dubai, and Singapore?'
+      label: '💰 Scholarships & Fee Slabs',
+      query: 'What are the merit scholarships and fee concessions available for 12th commerce students at RDCCPS?'
     },
     {
-      label: '💻 I like Computers & Accounting',
-      query: 'Tell me about B.Com Computer Applications with CA. What software and tools will I learn?'
+      label: '🌍 ACCA vs CA (Abroad vs India)',
+      query: 'What is the difference between B.Com with CA and B.Com Finance with ACCA for working in UK, Dubai, or Singapore?'
     },
     {
-      label: '🎯 Best Course for 75%+ in 12th Commerce',
-      query: 'I scored around 75-85% in 12th Commerce. Which course and scholarship am I eligible for at RDCCPS?'
+      label: '⏰ Daily College Timetable',
+      query: 'How does RDCCPS balance Bharathiar University degree classes and CA/ACCA coaching in the daily timetable?'
     },
     {
-      label: '⚖️ CA vs CMA: Which one should I choose?',
-      query: 'Compare Chartered Accountancy (CA) and Cost & Management Accountancy (CMA) in terms of difficulty, duration, and career package.'
+      label: '🚌 Hostel & Daily Bus Routes',
+      query: 'Tell me about the hostel facilities, dining mess, and college bus routes across Erode and Tiruppur.'
     },
     {
-      label: '🏛️ Tell me about Bharathiar University Degree & Daily Schedule',
-      query: 'How does RDCCPS balance Bharathiar University degree classes and CA/ACCA professional coaching in the daily timetable?'
+      label: '📋 Admission 2026-27 Documents',
+      query: 'What is the eligibility criteria and what documents are required for 2026-2027 B.Com admission?'
+    },
+    {
+      label: '⚖️ CA vs CMA Differences',
+      query: 'Compare Chartered Accountancy (CA) and Cost & Management Accountancy (CMA) in terms of syllabus, duration, and job roles.'
     }
   ];
 
@@ -114,7 +121,26 @@ I'm here to help you discover the exact undergraduate commerce degree & professi
     }
   }, [initialQuery]);
 
-  // Helper to extract course IDs mentioned in text
+  // Copy message text helper
+  const handleCopyMessage = async (msgId: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(msgId);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {
+      // Fallback if clipboard API unavailable in iframe
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopiedId(msgId);
+      setTimeout(() => setCopiedId(null), 2000);
+    }
+  };
+
+  // Helper to accurately extract course IDs mentioned in text matching COURSES_DATA
   const detectCoursesInText = (text: string): Course[] => {
     const matched: Course[] = [];
     const lower = text.toLowerCase();
@@ -123,11 +149,11 @@ I'm here to help you discover the exact undergraduate commerce degree & professi
       if (
         lower.includes(course.name.toLowerCase()) ||
         lower.includes(course.code.toLowerCase()) ||
-        (course.id === 'bcom-general-ca' && (lower.includes('b.com with ca') || lower.includes('bcom with ca') || lower.includes('chartered accountancy (ca)'))) ||
-        (course.id === 'bcom-international-acca' && (lower.includes('acca') || lower.includes('global accounting') || lower.includes('9 paper'))) ||
-        (course.id === 'bcom-ca-computer' && (lower.includes('computer application') || lower.includes('b.com (ca)') || lower.includes('bcom ca'))) ||
-        (course.id === 'bcom-corporate-secretaryship-cma' && (lower.includes('corporate secretaryship') || lower.includes('cma') || lower.includes('cost & management'))) ||
-        (course.id === 'bcom-professional-accounting' && (lower.includes('professional accounting') || lower.includes('b.com (pa)')))
+        (course.id === 'bcom-general-ca' && (lower.includes('b.com with ca') || lower.includes('bcom with ca') || lower.includes('bcom-ca-01') || lower.includes('chartered accountancy (ca)'))) ||
+        (course.id === 'bcom-finance-acca' && (lower.includes('acca') || lower.includes('bcom-fin-03') || lower.includes('global accounting') || lower.includes('9 paper'))) ||
+        (course.id === 'bcom-accounting-finance-ca' && (lower.includes('bcom-af-04') || lower.includes('accounting & finance') || lower.includes('accounting and finance') || lower.includes('financial analytics'))) ||
+        (course.id === 'bcom-banking-finance-cma' && (lower.includes('bcom-bf-05') || lower.includes('banking & finance') || lower.includes('banking and finance') || lower.includes('cma') || lower.includes('cost & management'))) ||
+        (course.id === 'bcom-professional-accounting-ca' && (lower.includes('bcom-pa-02') || lower.includes('professional accounting') || lower.includes('b.com (pa)') || lower.includes('bcom pa')))
       ) {
         if (!matched.some((c) => c.id === course.id)) {
           matched.push(course);
@@ -198,19 +224,19 @@ I'm here to help you discover the exact undergraduate commerce degree & professi
       const fallbackMessage: ChatMessage = {
         id: `ai-err-${Date.now()}`,
         role: 'assistant',
-        content: `### 🎓 Recommended RDCCPS Degree Programs
+        content: `### 🎓 Flagship RDCCPS Degree Programs (2026-27)
 
 We offer 5 specialized Bharathiar University B.Com degree tracks:
 
-- **B.Com with CA**: ICAI Foundation & Inter on-campus coaching.
-- **B.Com with ACCA (UK)**: 9 Paper Exemptions for global careers in 180+ countries.
-- **B.Com (Computer Applications) with CA**: High-tech blend of software, Fintech, and accounting.
-- **B.Com (Professional Accounting)**: Fast-track corporate accounting.
-- **B.Com (Corporate Secretaryship) with CMA**: Industrial costing and corporate compliance.
+1. **B.Com with CA** [Code: **BCOM-CA-01**]: ICAI CA Foundation & Inter on-campus coaching.
+2. **B.Com Professional Accounting with CA** [Code: **BCOM-PA-02**]: 100% ICAI syllabus synergy.
+3. **B.Com Finance with ACCA (UK)** [Code: **BCOM-FIN-03**]: 9 Paper Exemptions for global careers in 180+ countries.
+4. **B.Com Accounting & Finance with CA** [Code: **BCOM-AF-04**]: Capital markets, financial modeling & CA prep.
+5. **B.Com Banking & Finance with CMA** [Code: **BCOM-BF-05**]: Strategic cost management and commercial banking.
 
-*Call our counsellors directly at +91 97885 56999 or explore our courses below!*`,
+*Call our admission counsellors directly at **+91 97885 56999** or explore our course options below!*`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        recommendedCourses: ['bcom-general-ca', 'bcom-international-acca']
+        recommendedCourses: ['bcom-general-ca', 'bcom-finance-acca']
       };
       setMessages((prev) => [...prev, fallbackMessage]);
     } finally {
@@ -223,9 +249,9 @@ We offer 5 specialized Bharathiar University B.Com degree tracks:
       {
         id: 'welcome-reset',
         role: 'assistant',
-        content: `### 🔄 Chat Reset
+        content: `### 🔄 Conversation Reset
 
-How can I help you choose the right course today? Feel free to ask about fees, scholarships, syllabus, CA/ACCA exemptions, or hostel facilities.`,
+How can I help you choose the right course today? Feel free to ask about fees, scholarships, syllabus, CA/ACCA exemptions, hostel, or transport facilities.`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -385,7 +411,7 @@ How can I help you choose the right course today? Feel free to ask about fees, s
                         {isUser ? (
                           <p className="font-medium whitespace-pre-wrap">{msg.content}</p>
                         ) : (
-                          <div className="prose prose-xs max-w-none text-slate-800 [&_h3]:text-sm [&_h3]:font-extrabold [&_h3]:text-slate-900 [&_h3]:mt-1.5 [&_h3]:mb-1 [&_p]:my-1.5 [&_ul]:my-1 [&_ul]:pl-4 [&_li]:my-0.5 [&_strong]:text-slate-950 [&_strong]:font-bold">
+                          <div className="prose prose-xs max-w-none text-slate-800 [&_h3]:text-sm [&_h3]:font-extrabold [&_h3]:text-slate-900 [&_h3]:mt-1.5 [&_h3]:mb-1.5 [&_h4]:text-xs [&_h4]:font-bold [&_h4]:text-slate-900 [&_p]:my-1.5 [&_ul]:my-1.5 [&_ul]:pl-4 [&_li]:my-0.5 [&_strong]:text-slate-950 [&_strong]:font-bold [&_table]:w-full [&_table]:border-collapse [&_table]:text-[11px] [&_table]:my-2.5 [&_table]:rounded-lg [&_table]:overflow-hidden [&_th]:bg-slate-100 [&_th]:p-1.5 [&_th]:border [&_th]:border-slate-200 [&_th]:font-bold [&_th]:text-slate-900 [&_td]:p-1.5 [&_td]:border [&_td]:border-slate-200 [&_td]:text-slate-700">
                             <Markdown>{msg.content}</Markdown>
                           </div>
                         )}
@@ -400,7 +426,7 @@ How can I help you choose the right course today? Feel free to ask about fees, s
                             key={course.id}
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white border border-amber-300/80 rounded-xl p-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-2 overflow-hidden"
+                            className="bg-white border border-amber-300/80 rounded-xl p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between gap-2 overflow-hidden"
                           >
                             <div className="flex items-center gap-3">
                               {course.imageUrl && (
@@ -454,9 +480,28 @@ How can I help you choose the right course today? Feel free to ask about fees, s
                       </div>
                     )}
 
-                    <span className="text-[10px] text-slate-400 px-9">
-                      {msg.timestamp}
-                    </span>
+                    <div className="flex items-center gap-2 text-[10px] text-slate-400 px-9">
+                      <span>{msg.timestamp}</span>
+                      {!isUser && (
+                        <button
+                          onClick={() => handleCopyMessage(msg.id, msg.content)}
+                          className="flex items-center gap-1 hover:text-slate-700 transition-colors cursor-pointer"
+                          title="Copy response"
+                        >
+                          {copiedId === msg.id ? (
+                            <>
+                              <Check className="w-3 h-3 text-emerald-600" />
+                              <span className="text-emerald-600 font-medium">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 );
               })}
