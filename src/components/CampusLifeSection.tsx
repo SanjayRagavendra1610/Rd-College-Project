@@ -13,9 +13,11 @@ import {
   CheckCircle2, 
   MapPin, 
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  Camera
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import rdCollegeCampus from '../assets/images/rd_college_campus.jpg';
 
 interface CampusLifeSectionProps {
   onOpenApply?: () => void;
@@ -58,6 +60,60 @@ export const CampusLifeSection: React.FC<CampusLifeSectionProps> = ({ onOpenAppl
             Located in Vijayamangalam, Perundurai (Erode) along the Uthukuli corridor, RDCCPS provides state-of-the-art academic infrastructure, smart AC lecture halls, and secure residential amenities.
           </p>
         </div>
+
+        {/* Featured Campus Visual Panorama Card */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl bg-slate-950 group"
+        >
+          <div className="relative aspect-[21/9] min-h-[300px] sm:min-h-[380px] w-full overflow-hidden">
+            <img 
+              src={rdCollegeCampus} 
+              alt="RD College of Commerce and Professional Studies Campus Building" 
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+              referrerPolicy="no-referrer"
+            />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-transparent to-slate-950/40" />
+
+            {/* Floating Info Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4 z-10">
+              <div className="space-y-2 max-w-2xl">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 text-xs font-extrabold shadow-sm">
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Campus Architectural Facade</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-serif tracking-tight">
+                  RD College of Commerce and Professional Studies
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                  Pristine, distraction-free environment in Vijayamangalam, Erode with manicured lawns, state-of-the-art air-conditioned lecture halls, ICAI study pods, and on-campus hostel.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700 text-xs text-white font-medium backdrop-blur-md">
+                  10+ Acre Campus
+                </span>
+                <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700 text-xs text-amber-300 font-medium backdrop-blur-md">
+                  NH-544 Connectivity
+                </span>
+                {onOpenApply && (
+                  <button
+                    onClick={onOpenApply}
+                    className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition-all cursor-pointer"
+                  >
+                    Schedule Campus Visit
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Facility Category Filter */}
         <div className="flex justify-center">
