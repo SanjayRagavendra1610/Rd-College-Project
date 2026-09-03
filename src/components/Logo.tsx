@@ -1,5 +1,6 @@
 import React from 'react';
-import rdCollegeLogo from '../assets/images/rd_college_logo.jpg';
+import rdCollegeFullLogo from '../assets/images/rd_college_logo_with_affiliated.png';
+import rdCollegeCrest from '../assets/images/rd_college_crest.png';
 
 interface LogoProps {
   variant?: 'light' | 'dark' | 'crest-only';
@@ -10,7 +11,7 @@ interface LogoProps {
 }
 
 /**
- * Exact RDCCPS Crest Emblem Component using the uploaded official logo image
+ * Authentic RDCCPS Crest Emblem Component using the uploaded official logo
  */
 export const RdccpsShieldCrest: React.FC<{ size?: number | string; className?: string }> = ({ 
   size = 48, 
@@ -24,9 +25,9 @@ export const RdccpsShieldCrest: React.FC<{ size?: number | string; className?: s
       style={{ width: pixelSize, height: pixelSize }}
     >
       <img
-        src={rdCollegeLogo}
+        src={rdCollegeCrest}
         alt="RDCCPS Crest Logo"
-        className="w-full h-full object-contain filter drop-shadow-sm transition-transform duration-200"
+        className="w-full h-full object-contain filter drop-shadow-xs transition-transform duration-200"
         referrerPolicy="no-referrer"
         loading="eager"
       />
@@ -37,154 +38,53 @@ export const RdccpsShieldCrest: React.FC<{ size?: number | string; className?: s
 export const Logo: React.FC<LogoProps> = ({ 
   variant = 'dark', 
   size = 'md', 
-  className = '', 
-  layout = 'horizontal',
-  showAffiliation = true
+  className = '',
 }) => {
-  const isLightModeText = variant === 'light'; // used when logo is on dark backgrounds (e.g. footer, hero, modals)
-  
-  // Sizing for the crest emblem
-  const shieldSizes: Record<string, number> = {
-    sm: 38,
-    md: 48,
-    lg: 60,
-    xl: 78
+  if (variant === 'crest-only') {
+    const shieldSizes: Record<string, number> = {
+      sm: 44,
+      md: 58,
+      lg: 74,
+      xl: 96
+    };
+    return <RdccpsShieldCrest size={shieldSizes[size] || 58} className={className} />;
+  }
+
+  // Exact height scales for the uploaded authentic logo image (aspect ratio ~ 2.41)
+  const sizeClasses: Record<string, string> = {
+    sm: 'h-11 sm:h-13',
+    md: 'h-14 sm:h-16 md:h-18 lg:h-20',
+    lg: 'h-18 sm:h-22 md:h-26',
+    xl: 'h-24 sm:h-30 md:h-36'
   };
 
-  const shieldPx = shieldSizes[size] || 48;
+  const currentHeight = sizeClasses[size] || sizeClasses.md;
 
-  if (variant === 'crest-only') {
-    return <RdccpsShieldCrest size={shieldPx} className={className} />;
+  // When placed on a dark background (like dark modals or dark footer), wrap in a clean light capsule
+  if (variant === 'light') {
+    return (
+      <div className={`inline-flex items-center bg-white px-3.5 py-2 rounded-xl shadow-md border border-slate-200/40 select-none ${className}`}>
+        <img
+          src={rdCollegeFullLogo}
+          alt="RD College of Commerce and Professional Studies - Affiliated to Bharathiar University"
+          className={`${currentHeight} w-auto object-contain max-w-full`}
+          referrerPolicy="no-referrer"
+          loading="eager"
+        />
+      </div>
+    );
   }
 
   return (
-    <div id="rdccps-official-logo" className={`flex items-center gap-2.5 sm:gap-3 select-none ${className}`}>
-      {/* Official RDCCPS Logo Image */}
-      <div 
-        className="relative flex-shrink-0 flex items-center justify-center rounded-lg overflow-hidden bg-white/95 p-0.5 shadow-sm border border-amber-200/50"
-        style={{ width: shieldPx + 4, height: shieldPx + 4 }}
-      >
-        <img 
-          src={rdCollegeLogo}
-          alt="RDCCPS - RD College of Commerce & Professional Studies" 
-          className="w-full h-full object-contain"
-          referrerPolicy="no-referrer"
-        />
-      </div>
-
-      {/* Typography Identity Section */}
-      {layout === 'horizontal' ? (
-        <div className="flex flex-col justify-center">
-          <div className="flex items-baseline gap-1.5 flex-wrap">
-            <span 
-              className={`font-black tracking-wider uppercase leading-none ${
-                size === 'sm' 
-                  ? 'text-sm sm:text-base' 
-                  : size === 'lg' 
-                    ? 'text-lg sm:text-2xl' 
-                    : size === 'xl'
-                      ? 'text-xl sm:text-3xl'
-                      : 'text-base sm:text-xl'
-              } ${
-                isLightModeText 
-                  ? 'text-amber-300 drop-shadow-xs' 
-                  : 'text-[#6A101F]'
-              }`}
-              style={{ 
-                fontFamily: "'EB Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif"
-              }}
-            >
-              RD COLLEGE
-            </span>
-            <span 
-              className={`font-semibold tracking-normal leading-none ${
-                size === 'sm' 
-                  ? 'text-[11px] sm:text-xs' 
-                  : size === 'lg' 
-                    ? 'text-sm sm:text-base' 
-                    : size === 'xl'
-                      ? 'text-base sm:text-lg'
-                      : 'text-xs sm:text-sm'
-              } ${
-                isLightModeText ? 'text-slate-100' : 'text-[#0B2342]'
-              }`}
-              style={{ 
-                fontFamily: "'Plus Jakarta Sans', sans-serif"
-              }}
-            >
-              OF COMMERCE
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5 mt-0.5">
-            <span 
-              className={`font-bold tracking-tight text-[10px] sm:text-[11px] ${
-                isLightModeText ? 'text-amber-400 font-extrabold' : 'text-amber-700'
-              }`}
-            >
-              &amp; PROFESSIONAL STUDIES
-            </span>
-            {showAffiliation && (
-              <>
-                <span className="text-slate-400 text-[10px] hidden sm:inline">•</span>
-                <span 
-                  className={`text-[9px] sm:text-[10px] font-medium hidden sm:inline ${
-                    isLightModeText ? 'text-slate-300' : 'text-slate-500'
-                  }`}
-                >
-                  Affiliated to Bharathiar University
-                </span>
-              </>
-            )}
-          </div>
-        </div>
-      ) : (
-        /* Stacked Layout (Used in Footer & Hero Banners) */
-        <div className="flex flex-col">
-          <span 
-            className={`font-extrabold tracking-wide uppercase leading-tight ${
-              size === 'sm' 
-                ? 'text-xs' 
-                : size === 'lg' 
-                  ? 'text-lg sm:text-xl' 
-                  : size === 'xl'
-                    ? 'text-xl sm:text-2xl'
-                    : 'text-sm sm:text-base'
-            } ${
-              isLightModeText 
-                ? 'text-amber-300 drop-shadow-xs' 
-                : 'text-[#6A101F]'
-            }`}
-            style={{ 
-              fontFamily: "'EB Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif"
-            }}
-          >
-            RD COLLEGE OF COMMERCE
-          </span>
-          <span 
-            className={`font-bold tracking-normal leading-tight text-xs sm:text-sm ${
-              isLightModeText ? 'text-slate-200' : 'text-[#0B2342]'
-            }`}
-            style={{ 
-              fontFamily: "'Plus Jakarta Sans', sans-serif"
-            }}
-          >
-            &amp; PROFESSIONAL STUDIES
-          </span>
-          {showAffiliation && (
-            <span 
-              className={`font-medium tracking-normal mt-0.5 whitespace-nowrap ${
-                size === 'sm' ? 'text-[8.5px] sm:text-[9.5px]' : size === 'lg' ? 'text-[11px] sm:text-xs' : 'text-[9.5px] sm:text-[10.5px]'
-              } ${
-                isLightModeText ? 'text-amber-200/90' : 'text-slate-500'
-              }`}
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              Affiliated to Bharathiar University, Coimbatore
-            </span>
-          )}
-        </div>
-      )}
+    <div id="rdccps-official-logo" className={`inline-flex items-center select-none ${className}`}>
+      <img
+        src={rdCollegeFullLogo}
+        alt="RD College of Commerce and Professional Studies - Affiliated to Bharathiar University"
+        className={`${currentHeight} w-auto object-contain max-w-full drop-shadow-xs`}
+        referrerPolicy="no-referrer"
+        loading="eager"
+      />
     </div>
   );
 };
+

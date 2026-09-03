@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RDCCPS_INFO } from '../data/coursesData';
 import { 
   Award, 
@@ -9,7 +9,6 @@ import {
   ShieldCheck, 
   TrendingUp, 
   Download, 
-  Camera, 
   MapPin 
 } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -33,8 +32,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenBrochure,
   onOpenAIChatbot
 }) => {
-  const [photoMode, setPhotoMode] = useState<'standard' | 'scenic'>('standard');
-
   const scrollToCourses = () => {
     const el = document.getElementById('courses-grid-section');
     if (el) {
@@ -53,22 +50,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           referrerPolicy="no-referrer"
         />
         
-        {/* Soft, light-adaptive photographic overlay that keeps the campus image fully visible while enhancing text contrast */}
-        <div 
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            photoMode === 'scenic'
-              ? 'bg-slate-950/20'
-              : 'bg-gradient-to-b from-slate-950/40 via-slate-950/30 to-slate-950/60'
-          }`} 
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-slate-950/40" />
-        
-        {/* Subtle border ring */}
-        <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+        {/* Rich cinematic gradient overlay matching the uploaded image tone & depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-transparent to-slate-950/60" />
       </div>
 
       <div className="relative max-w-7xl mx-auto z-10 w-full">
-        {/* Header Breadcrumb / University Tag & Campus Photo Mode Switcher */}
+        {/* Header Breadcrumb / University Tag */}
         <motion.div 
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,7 +66,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.div 
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-950/85 border border-white/20 text-xs text-slate-200 backdrop-blur-md shadow-xl shadow-black/40"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-950/80 border border-white/20 text-xs text-slate-200 backdrop-blur-md shadow-xl shadow-black/40"
           >
             <RdccpsShieldCrest size={22} className="flex-shrink-0" />
             <span className="font-bold text-white tracking-wide">RDCCPS Erode</span>
@@ -87,30 +75,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <span className="text-slate-500">•</span>
             <span className="text-amber-400 font-bold">Admissions 2026-27</span>
           </motion.div>
-
-          {/* Quick toggle for campus photo view */}
-          <button
-            type="button"
-            onClick={() => setPhotoMode(prev => prev === 'standard' ? 'scenic' : 'standard')}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-slate-900 text-xs text-amber-300 border border-amber-400/50 backdrop-blur-md shadow-lg transition-all cursor-pointer group"
-            title="Toggle campus background scenic view"
-          >
-            <Camera className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span className="font-semibold">
-              {photoMode === 'scenic' ? 'Focus Reading View' : 'Clear Scenic View'}
-            </span>
-          </button>
         </motion.div>
 
-        {/* Main Content Glass Card - Decreased opacity to reveal the campus building behind */}
-        <div className={`max-w-4xl mx-auto rounded-3xl border border-white/15 p-6 sm:p-10 shadow-xl relative overflow-hidden transition-all duration-500 ${
-          photoMode === 'scenic'
-            ? 'bg-slate-950/10 backdrop-blur-xs shadow-black/20'
-            : 'bg-slate-950/25 backdrop-blur-sm shadow-black/40'
-        }`}>
-          {/* Subtle corner glow decoration */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-
+        {/* Main Content - No container box, keeping the background image completely open and visible */}
+        <div className="max-w-4xl mx-auto relative text-center px-2 sm:px-4">
           {/* Main Title */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -118,10 +86,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-center space-y-4"
           >
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
               Dual-Qualification Commerce Degrees for{' '}
               <span className="relative inline-block">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
                   Global Financial Leaders
                 </span>
                 {/* Subtle underline glow animation */}
@@ -129,13 +97,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   initial={{ width: 0 }}
                   animate={{ width: '100%' }}
                   transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-amber-400 to-amber-200 rounded-full opacity-80"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-amber-400 to-amber-200 rounded-full opacity-90 shadow-sm shadow-black"
                 />
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-slate-100 font-medium leading-relaxed max-w-3xl mx-auto drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
-              Experience an integrated academic model at RDCCPS. Pursue your recognized Bharathiar University B.Com degree alongside intensive, on-campus coaching for <span className="text-white font-bold underline decoration-amber-400/80 decoration-2">CA (ICAI)</span>, <span className="text-white font-bold underline decoration-emerald-400/80 decoration-2">ACCA (UK)</span>, and <span className="text-white font-bold underline decoration-amber-400/80 decoration-2">CMA (ICMAI)</span>.
+            <p className="text-base sm:text-lg lg:text-xl text-white font-medium leading-relaxed max-w-3xl mx-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
+              Experience an integrated academic model at RDCCPS. Pursue your recognized Bharathiar University B.Com degree alongside intensive, on-campus coaching for <span className="text-amber-300 font-bold underline decoration-amber-400/90 decoration-2">CA (ICAI)</span>, <span className="text-emerald-300 font-bold underline decoration-emerald-400/90 decoration-2">ACCA (UK)</span>, and <span className="text-amber-300 font-bold underline decoration-amber-400/90 decoration-2">CMA (ICMAI)</span>.
             </p>
           </motion.div>
 
@@ -151,7 +119,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               whileTap={{ scale: 0.98 }}
               id="hero-explore-courses-btn"
               onClick={scrollToCourses}
-              className="relative group overflow-hidden px-6 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 text-slate-950 shadow-xl shadow-amber-500/30 flex items-center gap-2 cursor-pointer"
+              className="relative group overflow-hidden px-6 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 text-slate-950 shadow-2xl shadow-black/50 flex items-center gap-2 cursor-pointer border border-amber-300/40"
             >
               {/* Shimmer light sweep */}
               <span className="absolute inset-0 w-1/2 h-full bg-white/30 transform -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-out pointer-events-none" />
@@ -166,7 +134,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 whileTap={{ scale: 0.98 }}
                 id="hero-ai-advisor-btn"
                 onClick={onOpenAIChatbot}
-                className="px-5 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-500 text-white border border-indigo-400/50 flex items-center gap-2 shadow-lg shadow-indigo-950/40 transition-all cursor-pointer"
+                className="px-5 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-500 text-white border border-indigo-300/50 flex items-center gap-2 shadow-2xl shadow-black/50 transition-all cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '5s' }} />
                 <span>Ask AI Course Advisor</span>
@@ -178,7 +146,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               whileTap={{ scale: 0.98 }}
               id="hero-recommend-wizard-btn"
               onClick={onOpenCompass}
-              className="px-5 py-3.5 rounded-xl font-semibold text-sm bg-slate-900/90 hover:bg-slate-800 text-white border border-white/20 flex items-center gap-2 shadow-lg transition-all cursor-pointer"
+              className="px-5 py-3.5 rounded-xl font-semibold text-sm bg-slate-950/80 hover:bg-slate-900 text-white border border-white/30 backdrop-blur-md flex items-center gap-2 shadow-2xl shadow-black/50 transition-all cursor-pointer"
             >
               <Compass className="w-4 h-4 text-emerald-400 animate-spin" style={{ animationDuration: '10s' }} />
               <span>Course Match Wizard</span>
@@ -189,7 +157,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               whileTap={{ scale: 0.98 }}
               id="hero-download-prospectus-btn"
               onClick={onOpenBrochure}
-              className="px-5 py-3.5 rounded-xl font-semibold text-sm bg-slate-900/60 hover:bg-slate-900 text-slate-200 hover:text-white border border-white/20 flex items-center gap-2 transition-all cursor-pointer"
+              className="px-5 py-3.5 rounded-xl font-semibold text-sm bg-slate-950/75 hover:bg-slate-900 text-slate-100 hover:text-white border border-white/25 backdrop-blur-md flex items-center gap-2 shadow-2xl shadow-black/50 transition-all cursor-pointer"
             >
               <Download className="w-4 h-4 text-sky-400" />
               <span>Prospectus</span>
