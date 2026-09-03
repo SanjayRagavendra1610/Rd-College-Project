@@ -23,6 +23,7 @@ import { FAQSection } from './components/FAQSection';
 import { AdmissionModal } from './components/AdmissionModal';
 import { BrochureModal } from './components/BrochureModal';
 import { AICourseChatbot } from './components/AICourseChatbot';
+import { EventsSection } from './components/EventsSection';
 import { Footer } from './components/Footer';
 import { 
   Phone, 
@@ -376,6 +377,13 @@ export default function App() {
       {activeTab === 'contact' && (
         <main className="flex-1">
           <ContactSection />
+        </main>
+      )}
+
+      {/* 9. EVENTS & FUNCTIONS TAB */}
+      {activeTab === 'events' && (
+        <main className="flex-1">
+          <EventsSection onOpenApply={() => handleOpenApply()} />
         </main>
       )}
 

@@ -111,10 +111,28 @@ export const FacultySection: React.FC<FacultySectionProps> = ({ onOpenApply }) =
                   </span>
                 </div>
 
-                {/* Name & Designation */}
-                <div>
-                  <h3 className="text-lg font-extrabold text-slate-900 font-serif">{member.name}</h3>
-                  <p className="text-xs font-semibold text-amber-700">{member.designation}</p>
+                {/* Name & Designation with Chairman Avatar */}
+                <div className="flex items-center gap-3">
+                  {member.id === 'fac-founder' && (
+                    <div className="w-13 h-13 rounded-full overflow-hidden border-2 border-amber-400 shrink-0 shadow-md ring-2 ring-amber-300/40 bg-slate-900">
+                      <img 
+                        src="/chairman_photo.jpg" 
+                        alt={member.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover object-top"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (!target.src.includes('DSC01929')) {
+                            target.src = '/DSC01929.jpg';
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="text-lg font-extrabold text-slate-900 font-serif">{member.name}</h3>
+                    <p className="text-xs font-semibold text-amber-700">{member.designation}</p>
+                  </div>
                 </div>
 
                 {/* Qualifications */}

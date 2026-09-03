@@ -14,7 +14,8 @@ import {
   Sparkles,
   ArrowRight,
   GraduationCap,
-  Calendar
+  Calendar,
+  Camera
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -189,6 +190,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               Contact
             </button>
+            <button 
+              id="nav-link-events"
+              onClick={() => handleNavClick('events')} 
+              className={`transition-colors py-1 cursor-pointer flex items-center gap-1.5 ${activeTab === 'events' ? 'text-amber-600 font-bold border-b-2 border-amber-500' : 'hover:text-amber-600'}`}
+            >
+              <Camera className="w-3.5 h-3.5 text-amber-500" />
+              <span>Photo Gallery</span>
+            </button>
             <button
               id="nav-link-ai-advisor"
               onClick={onOpenAIChatbot}
@@ -344,6 +353,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'contact' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
               >
                 <span>Contact &amp; Campus Visit</span>
+              </button>
+              <button 
+                onClick={() => handleNavClick('events')} 
+                className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between ${activeTab === 'events' ? 'bg-amber-100/70 text-amber-950 font-bold' : 'hover:bg-slate-100'}`}
+              >
+                <span className="flex items-center gap-2">
+                  <Camera className="w-4 h-4 text-amber-600" />
+                  <span>Event Photo Gallery</span>
+                </span>
+                <span className="text-[10px] bg-amber-500 text-slate-950 px-2 py-0.5 rounded font-bold">Gallery</span>
               </button>
               <button 
                 onClick={() => {

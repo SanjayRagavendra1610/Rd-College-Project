@@ -162,6 +162,15 @@ export const Footer: React.FC<FooterProps> = ({
                   Contact &amp; Campus Location
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => handleTabClick('events')}
+                  className="hover:text-amber-400 transition-colors text-slate-300 cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>Event Photo Gallery</span>
+                  <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-bold">Gallery</span>
+                </button>
+              </li>
             </ul>
           </div>
 

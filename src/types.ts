@@ -1,5 +1,5 @@
 export type CertificationType = 'CA' | 'ACCA' | 'CMA' | 'ALL';
-export type ActiveTabType = 'home' | 'about' | 'courses' | 'faculty' | 'admissions' | 'facilities' | 'placements' | 'contact';
+export type ActiveTabType = 'home' | 'about' | 'courses' | 'faculty' | 'admissions' | 'facilities' | 'placements' | 'contact' | 'events';
 
 export interface SemesterSubject {
   code: string;
@@ -103,5 +103,29 @@ export interface AdmissionEnquiry {
   hostelRequired: boolean;
   transportRequired: boolean;
   queryOrMessage?: string;
+}
+
+export interface EventPhoto {
+  id: string;
+  url: string;
+  caption?: string;
+  uploadedAt: string;
+  size?: number;
+}
+
+export type EventCategory = 'all' | 'academic' | 'cultural' | 'sports' | 'celebration' | 'workshop' | 'orientation';
+
+export interface CollegeEvent {
+  id: string;
+  title: string;
+  category: 'academic' | 'cultural' | 'sports' | 'celebration' | 'workshop' | 'orientation';
+  date: string; // YYYY-MM-DD or readable
+  venue: string;
+  organizer: string;
+  description: string;
+  photos: EventPhoto[];
+  isUserUploaded?: boolean;
+  featured?: boolean;
+  createdAt: number;
 }
 
